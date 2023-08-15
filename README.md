@@ -21,7 +21,7 @@ td.push(Buffer.of(0xa9)) // returns '💩'
 
 #### `const td = new TextDecoder([encoding])`
 
-Create a text decoder. `encoding` default to `utf8`.
+Create a text decoder. `encoding` defaults to `utf8`.
 
 #### `const string = td.push(data)`
 
