@@ -12,6 +12,8 @@ test('utf8, 2-byte character', (t) => {
 
   t.is(td.push(Buffer.of(0xc2)), '')
   t.is(td.push(Buffer.of(0xa2)), '¢')
+
+  t.is(td.push('hello world'), 'hello world', 'remainder')
 })
 
 test('utf8, 3-byte character', (t) => {
@@ -20,6 +22,8 @@ test('utf8, 3-byte character', (t) => {
   t.is(td.push(Buffer.of(0xe2)), '')
   t.is(td.push(Buffer.of(0x82)), '')
   t.is(td.push(Buffer.of(0xac)), '€')
+
+  t.is(td.push('hello world'), 'hello world', 'remainder')
 })
 
 test('utf8, 4-byte character', (t) => {
@@ -29,4 +33,6 @@ test('utf8, 4-byte character', (t) => {
   t.is(td.push(Buffer.of(0x9f)), '')
   t.is(td.push(Buffer.of(0x92)), '')
   t.is(td.push(Buffer.of(0xa9)), '💩')
+
+  t.is(td.push('hello world'), 'hello world', 'remainder')
 })
