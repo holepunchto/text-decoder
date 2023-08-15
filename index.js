@@ -11,6 +11,10 @@ module.exports = class TextDecoder {
         break
       default:
         this.decoder = new PassThroughDecoder(this.encoding)
+        break
+      case 'utf16le':
+      case 'base64':
+        throw new Error('Unsupported encoding: ' + this.encoding)
     }
   }
 
