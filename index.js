@@ -22,6 +22,11 @@ module.exports = class TextDecoder {
     return this.decoder.decode(data)
   }
 
+  // For Node.js compatibility
+  write (data) {
+    return this.push(data)
+  }
+
   end (data) {
     let result = ''
     if (data) result = this.push(data)
