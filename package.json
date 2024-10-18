@@ -1,6 +1,6 @@
 {
   "name": "text-decoder",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Streaming text decoder that preserves multibyte Unicode characters",
   "main": "index.js",
   "files": [
