@@ -11,6 +11,10 @@
     "./lib/pass-through-decoder.js": "./lib/browser-decoder.js",
     "./lib/utf8-decoder.js": "./lib/browser-decoder.js"
   },
+  "react-native": {
+    "./lib/pass-through-decoder.js": "./lib/pass-through-decoder.js",
+    "./lib/utf8-decoder.js": "./lib/utf8-decoder.js"
+  },
   "scripts": {
     "test": "standard && brittle test.js"
   },
