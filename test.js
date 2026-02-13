@@ -52,3 +52,18 @@ test('utf8, 4-byte character', (t) => {
 
   t.is(td.push('hello world'), 'hello world', 'remainder')
 })
+
+test('utf8, invalid continuation byte', (t) => {
+  const td = new TextDecoder()
+
+  t.is(td.push(Buffer.of(0xf0, 0x80, 0x80)), '���')
+  t.is(td.remaining, 1)
+  td.end()
+
+  t.is(td.push(Buffer.of(0xf0, 0x80, 0x80, 0x2a, 0x2a)), '���**')
+  t.is(td.remaining, 1)
+  td.end()
+
+  t.is(td.push(Buffer.of(0xf0, 0x90, 0x80, 0x2a, 0x2a)), '�**')
+  t.is(td.remaining, 0)
+})
