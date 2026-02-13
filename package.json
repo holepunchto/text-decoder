@@ -9,11 +9,11 @@
   ],
   "browser": {
     "./lib/pass-through-decoder.js": "./lib/browser-decoder.js",
-    "./lib/utf8-decoder.js": "./lib/browser-decoder.js"
+    "./lib/bytes-decoder.js": "./lib/browser-decoder.js"
   },
   "react-native": {
     "./lib/pass-through-decoder.js": "./lib/pass-through-decoder.js",
-    "./lib/utf8-decoder.js": "./lib/utf8-decoder.js"
+    "./lib/bytes-decoder.js": "./lib/bytes-decoder.js"
   },
   "scripts": {
     "format": "prettier --write .",
@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/holepunchto/text-decoder#readme",
   "dependencies": {
+    "@exodus/bytes": "^1.14.1",
     "b4a": "^1.6.4"
   },
   "devDependencies": {

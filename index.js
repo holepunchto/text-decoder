@@ -1,19 +1,23 @@
 const PassThroughDecoder = require('./lib/pass-through-decoder')
-const UTF8Decoder = require('./lib/utf8-decoder')
+const BytesDecoder = require('./lib/bytes-decoder')
+const HexDecoder = require('./lib/hex-decoder')
 
 module.exports = class TextDecoder {
   constructor(encoding = 'utf8') {
     this.encoding = normalizeEncoding(encoding)
 
     switch (this.encoding) {
-      case 'utf8':
-        this.decoder = new UTF8Decoder()
-        break
-      case 'utf16le':
       case 'base64':
         throw new Error('Unsupported encoding: ' + this.encoding)
-      default:
+      case 'ascii':
+      case 'latin1':
         this.decoder = new PassThroughDecoder(this.encoding)
+        break
+      case 'hex':
+        this.decoder = new HexDecoder()
+        break
+      default:
+        this.decoder = new BytesDecoder(this.encoding)
     }
   }
 
