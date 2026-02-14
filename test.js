@@ -504,3 +504,49 @@ test('utf8, multiple incomplete sequences flushed', (t) => {
 
   t.is(td.push(Buffer.from('ok')), 'ok')
 })
+
+test('utf8, remaining reflects last byte state on fast path', (t) => {
+  const td = new TextDecoder()
+
+  t.is(td.push(Buffer.of(0x80)), '\ufffd')
+  t.is(td.remaining, 1, 'lone 0x80')
+
+  t.is(td.push(Buffer.of(0x41)), 'A')
+  t.is(td.remaining, 0, 'ASCII after invalid')
+
+  t.is(td.push(Buffer.of(0xbf)), '\ufffd')
+  t.is(td.remaining, 1, 'lone 0xbf')
+
+  t.is(td.push(Buffer.of(0xff)), '\ufffd')
+  t.is(td.remaining, 1, 'lone 0xff')
+
+  t.is(td.push(Buffer.of(0xc0)), '\ufffd')
+  t.is(td.remaining, 1, 'lone 0xc0')
+
+  t.is(td.push(Buffer.of(0xc1)), '\ufffd')
+  t.is(td.remaining, 1, 'lone 0xc1')
+
+  t.is(td.push(Buffer.of(0xf5)), '\ufffd')
+  t.is(td.remaining, 1, 'lone 0xf5')
+
+  t.is(td.push(Buffer.of(0xc2, 0xa2)), '\u00a2')
+  t.is(td.remaining, 0, 'complete 2-byte')
+
+  t.is(td.push(Buffer.of(0xf0, 0x9f, 0x92, 0xa9)), '\ud83d\udca9')
+  t.is(td.remaining, 0, 'complete 4-byte')
+
+  t.is(td.push(Buffer.of(0xe0, 0x80, 0x80)), '\ufffd\ufffd\ufffd')
+  t.is(td.remaining, 1, 'overlong e0 80 80')
+
+  t.is(td.push(Buffer.of(0xed, 0xa0, 0x80)), '\ufffd\ufffd\ufffd')
+  t.is(td.remaining, 1, 'surrogate ed a0 80')
+
+  t.is(td.push(Buffer.of(0x80, 0x41)), '\ufffdA')
+  t.is(td.remaining, 0, 'invalid then ASCII')
+
+  t.is(td.push(Buffer.of(0x80, 0xc2, 0xa2)), '\ufffd\u00a2')
+  t.is(td.remaining, 0, 'invalid then valid 2-byte')
+
+  t.is(td.push(Buffer.of(0xc2, 0xa2, 0x80)), '\u00a2\ufffd')
+  t.is(td.remaining, 1, 'valid 2-byte then lone continuation')
+})
