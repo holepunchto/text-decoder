@@ -311,26 +311,14 @@ test('utf8, lone continuation bytes', (t) => {
 test('utf8, e0 boundary validation', (t) => {
   const td = new TextDecoder()
 
-  t.is(
-    td.push(Buffer.of(0xe0, 0xa0, 0x80)),
-    '\u0800',
-    'valid e0 a0 80 = U+0800'
-  )
-  t.is(
-    td.push(Buffer.of(0xe0, 0x9f, 0x80)),
-    '\ufffd\ufffd\ufffd',
-    'invalid e0 9f 80'
-  )
+  t.is(td.push(Buffer.of(0xe0, 0xa0, 0x80)), '\u0800', 'valid e0 a0 80 = U+0800')
+  t.is(td.push(Buffer.of(0xe0, 0x9f, 0x80)), '\ufffd\ufffd\ufffd', 'invalid e0 9f 80')
 })
 
 test('utf8, f0 boundary validation', (t) => {
   const td = new TextDecoder()
 
-  t.is(
-    td.push(Buffer.of(0xf0, 0x90, 0x80, 0x80)),
-    '\ud800\udc00',
-    'valid f0 90 80 80 = U+10000'
-  )
+  t.is(td.push(Buffer.of(0xf0, 0x90, 0x80, 0x80)), '\ud800\udc00', 'valid f0 90 80 80 = U+10000')
   td.end()
 
   t.is(
@@ -343,11 +331,7 @@ test('utf8, f0 boundary validation', (t) => {
 test('utf8, f4 boundary validation', (t) => {
   const td = new TextDecoder()
 
-  t.is(
-    td.push(Buffer.of(0xf4, 0x8f, 0xbf, 0xbf)),
-    '\udbff\udfff',
-    'valid f4 8f bf bf = U+10FFFF'
-  )
+  t.is(td.push(Buffer.of(0xf4, 0x8f, 0xbf, 0xbf)), '\udbff\udfff', 'valid f4 8f bf bf = U+10FFFF')
   td.end()
 
   t.is(
@@ -360,18 +344,10 @@ test('utf8, f4 boundary validation', (t) => {
 test('utf8, ed boundary validation', (t) => {
   const td = new TextDecoder()
 
-  t.is(
-    td.push(Buffer.of(0xed, 0x9f, 0xbf)),
-    '\ud7ff',
-    'valid ed 9f bf = U+D7FF'
-  )
+  t.is(td.push(Buffer.of(0xed, 0x9f, 0xbf)), '\ud7ff', 'valid ed 9f bf = U+D7FF')
   td.end()
 
-  t.is(
-    td.push(Buffer.of(0xed, 0xa0, 0x80)),
-    '\ufffd\ufffd\ufffd',
-    'invalid ed a0 80 = U+D800'
-  )
+  t.is(td.push(Buffer.of(0xed, 0xa0, 0x80)), '\ufffd\ufffd\ufffd', 'invalid ed a0 80 = U+D800')
 })
 
 test('utf8, boundary validation across chunks for e0', (t) => {
@@ -428,9 +404,7 @@ test('utf8, all single-byte values 0x00-0x7f', (t) => {
 
   const buf = Buffer.alloc(128)
   for (let i = 0; i < 128; i++) buf[i] = i
-  const expected = Array.from({ length: 128 }, (_, i) =>
-    String.fromCharCode(i)
-  ).join('')
+  const expected = Array.from({ length: 128 }, (_, i) => String.fromCharCode(i)).join('')
   t.is(td.push(buf), expected)
 })
 
